@@ -28,10 +28,24 @@ async function run() {
 
     const productsCollection = client.db("GoodGallery").collection("products");
 
-    app.get('/products', async(req,res) => {
-        const result = await productsCollection.find().toArray();
-        res.send(result)
-    })
+    app.get('/products', async (req, res) => {
+      const page = parseInt(req.query.page) || 1; // Default to page 1
+      const limit = parseInt(req.query.limit) || 10; // Default to 10 items per page
+      const skip = (page - 1) * limit;
+  
+      const productsCollection = client.db("GoodGallery").collection("products");
+  
+      const totalProducts = await productsCollection.countDocuments(); // Get total number of products
+      const products = await productsCollection.find().skip(skip).limit(limit).toArray(); // Get products for the current page
+  
+      res.send({
+          products,
+          totalProducts,
+          totalPages: Math.ceil(totalProducts / limit), // Calculate total pages
+          currentPage: page,
+      });
+  });
+  
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
