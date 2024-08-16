@@ -28,6 +28,11 @@ async function run() {
 
     const productsCollection = client.db("GoodGallery").collection("products");
 
+    app.get('/products', async(req,res) => {
+        const result = await productsCollection.find().toArray();
+        res.send(result)
+    })
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
