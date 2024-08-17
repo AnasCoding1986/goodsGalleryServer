@@ -63,3 +63,5 @@ src/config/: Configuration files for Firebase and MongoDB.
 Deployment
 You can deploy the backend on platforms like Heroku, AWS, or any cloud service provider.
 
+License
+This project is licensed under the MIT License
